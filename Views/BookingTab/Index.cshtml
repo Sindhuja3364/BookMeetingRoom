@@ -1,0 +1,59 @@
+﻿@model IEnumerable<BookMeetingRoom.Models.BookingTab>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h3> Booking Details </h3>
+
+
+<p>
+    @Html.ActionLink("Create New Booking", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            Room 
+        </th>
+        <th>
+            Meeting Date
+        </th>
+        <th>
+            Start Time
+        </th>
+        <th>
+            End Time
+        </th>
+        <th>
+            Subject
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.RoomTab.RoomName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MeetingDt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Subject)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.BookingId }) |
+                <!--@Html.ActionLink("Details", "Details", new { id = item.BookingId })|-->
+                @Html.ActionLink("Delete", "Delete", new { id = item.BookingId })
+            </td>
+        </tr>
+    }
+
+</table>

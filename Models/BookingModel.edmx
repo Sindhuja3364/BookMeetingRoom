@@ -1,0 +1,143 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="BookingRoomModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="BookingTab">
+          <Key>
+            <PropertyRef Name="BookingId" />
+          </Key>
+          <Property Name="BookingId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RoomNo" Type="varchar" MaxLength="4" Nullable="false" />
+          <Property Name="MeetingDt" Type="date" />
+          <Property Name="StartTime" Type="time" Precision="7" />
+          <Property Name="EndTime" Type="time" Precision="7" />
+          <Property Name="Subject" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="RoomTab">
+          <Key>
+            <PropertyRef Name="RoomNo" />
+          </Key>
+          <Property Name="RoomNo" Type="varchar" MaxLength="4" Nullable="false" />
+          <Property Name="RoomName" Type="varchar" MaxLength="20" />
+          <Property Name="RoomLevel" Type="varchar" MaxLength="10" />
+        </EntityType>
+        <Association Name="FK_BookingTab_RoomTab">
+          <End Role="RoomTab" Type="Self.RoomTab" Multiplicity="1" />
+          <End Role="BookingTab" Type="Self.BookingTab" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RoomTab">
+              <PropertyRef Name="RoomNo" />
+            </Principal>
+            <Dependent Role="BookingTab">
+              <PropertyRef Name="RoomNo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BookingRoomModelStoreContainer">
+          <EntitySet Name="BookingTab" EntityType="Self.BookingTab" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RoomTab" EntityType="Self.RoomTab" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_BookingTab_RoomTab" Association="Self.FK_BookingTab_RoomTab">
+            <End Role="RoomTab" EntitySet="RoomTab" />
+            <End Role="BookingTab" EntitySet="BookingTab" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="BookingRoomModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="BookingTab">
+          <Key>
+            <PropertyRef Name="BookingId" />
+          </Key>
+          <Property Name="BookingId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoomNo" Type="String" MaxLength="4" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="MeetingDt" Type="DateTime" Precision="0" />
+          <Property Name="StartTime" Type="Time" Precision="7" />
+          <Property Name="EndTime" Type="Time" Precision="7" />
+          <Property Name="Subject" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="RoomTab" Relationship="Self.FK_BookingTab_RoomTab" FromRole="BookingTab" ToRole="RoomTab" />
+        </EntityType>
+        <EntityType Name="RoomTab">
+          <Key>
+            <PropertyRef Name="RoomNo" />
+          </Key>
+          <Property Name="RoomNo" Type="String" MaxLength="4" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="RoomName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="RoomLevel" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="BookingTabs" Relationship="Self.FK_BookingTab_RoomTab" FromRole="RoomTab" ToRole="BookingTab" />
+        </EntityType>
+        <Association Name="FK_BookingTab_RoomTab">
+          <End Role="RoomTab" Type="Self.RoomTab" Multiplicity="1" />
+          <End Role="BookingTab" Type="Self.BookingTab" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RoomTab">
+              <PropertyRef Name="RoomNo" />
+            </Principal>
+            <Dependent Role="BookingTab">
+              <PropertyRef Name="RoomNo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BookingRoomEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="BookingTabs" EntityType="Self.BookingTab" />
+          <EntitySet Name="RoomTabs" EntityType="Self.RoomTab" />
+          <AssociationSet Name="FK_BookingTab_RoomTab" Association="Self.FK_BookingTab_RoomTab">
+            <End Role="RoomTab" EntitySet="RoomTabs" />
+            <End Role="BookingTab" EntitySet="BookingTabs" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="BookingRoomModelStoreContainer" CdmEntityContainer="BookingRoomEntities">
+          <EntitySetMapping Name="BookingTabs">
+            <EntityTypeMapping TypeName="BookingRoomModel.BookingTab">
+              <MappingFragment StoreEntitySet="BookingTab">
+                <ScalarProperty Name="BookingId" ColumnName="BookingId" />
+                <ScalarProperty Name="RoomNo" ColumnName="RoomNo" />
+                <ScalarProperty Name="MeetingDt" ColumnName="MeetingDt" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+                <ScalarProperty Name="Subject" ColumnName="Subject" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RoomTabs">
+            <EntityTypeMapping TypeName="BookingRoomModel.RoomTab">
+              <MappingFragment StoreEntitySet="RoomTab">
+                <ScalarProperty Name="RoomNo" ColumnName="RoomNo" />
+                <ScalarProperty Name="RoomName" ColumnName="RoomName" />
+                <ScalarProperty Name="RoomLevel" ColumnName="RoomLevel" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
